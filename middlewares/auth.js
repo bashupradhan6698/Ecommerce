@@ -3,12 +3,12 @@ const { SELLER } = require("../constants/role");
 function checkAuthentication(req, res, next) {
 
   /* 
-  todo: check lof status from req.
+  todo: check log status from req.
   
   
   */
 
-  let loggedIn = false;
+  let loggedIn = true;
   if (loggedIn) {
     req.role = "seller"
     if (req.role === SELLER) {

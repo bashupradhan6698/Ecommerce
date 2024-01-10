@@ -1,5 +1,5 @@
 const SELLER = "seller"
-const BUYER = "seller"
+const BUYER = "buyer"
 
 module.exports = {
   SELLER,
