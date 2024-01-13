@@ -3,6 +3,7 @@ const express = require("express");
 
 const product_routes = require("./routes/product")
 const auth_routes = require("./routes/auth");
+
 const { handleResourceNotFound, handleServerError } = require("./middlewares/error");
 
 require("./config/database")
