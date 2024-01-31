@@ -24,7 +24,6 @@ const create = async (req, res, next) => {
         stripUnknown: false,
         allowUnknown: true
       })
-    console.log("errors", error?.details)
 
     if (error?.details) {
       res.status(400).send({
@@ -33,14 +32,23 @@ const create = async (req, res, next) => {
       return;
     }
 
-    let product = await Product.create({ ...req.body, created_by: req.user_id })
+    let product = await Product.create({ ...req.body, created_by: req.user._id })
     res.send(product)
   } catch (err) {
     next(err)
   }
 }
 
+const fetchSingleProduct = async (req, res) => {
+  console.log(req.params)
+  console.log(req.query);
+  let product = await Product.findById(req.params.id)
+  res.send(product)
+
+}
+
 module.exports = {
   get,
-  create
+  create,
+  fetchSingleProduct
 }

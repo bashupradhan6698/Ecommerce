@@ -1,5 +1,7 @@
 const Joi = require("joi")
 const bcrypt = require("bcrypt")
+const jwt = require('jsonwebtoken');
+
 
 const User = require("../model/User")
 
@@ -38,7 +40,8 @@ const signUp = async (req, res, next) => {
     let hashed = await bcrypt.hash(req.body.password, 10)
 
     let user = await User.create({ ...req.body, password: hashed })
-    console.log(user);
+    user = user.toObject()
+    delete user.password
     res.send(user)
   }
 
@@ -75,12 +78,19 @@ const logIn = async (req, res, next) => {
 
     let user = await User.findOne({ email: req.body.email }).select("+password")
 
+
     if (user) {
-      console.log(user);
       let matched = await bcrypt.compare(req.body.password, user.password)
       if (matched) {
+        let userObj = user.toObject()
+        delete userObj.password;
+
+        let token = jwt.sign(userObj, process.env.JWT_SECRET);
+
+
         res.send({
-          msg: "login successful"
+          msg: "login successful",
+          token
         })
         return;
       }

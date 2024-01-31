@@ -1,14 +1,15 @@
 const express = require("express")
-const { checkAuthentication } = require("../middlewares/auth")
+const { checkAuthentication, isSeller } = require("../middlewares/auth")
 
-const { get, create } = require("../controller/product");
+const { get, create, fetchSingleProduct } = require("../controller/product");
 
 const router = express.Router();
 
 
-router.get("", get)
+router.get("", get) // GET /api/products
+router.get("/:id", fetchSingleProduct) //GET /api/products/product-id
 
-router.post("", checkAuthentication, create)
+router.post("", checkAuthentication, isSeller, create) //POST /api/products
 
 
 module.exports = router
