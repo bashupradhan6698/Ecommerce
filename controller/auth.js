@@ -58,9 +58,7 @@ const loginSchemaValidation = Joi.object({
 })
 
 const logIn = async (req, res, next) => {
-  /* 1. take email and password from req.body
-  2. check if user exists
-  3. check password  */
+
   try {
     let { error } = loginSchemaValidation.validate(req.body,
       {

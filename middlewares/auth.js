@@ -8,14 +8,15 @@ function checkAuthentication(req, res, next) {
   let token = req.headers?.authorization?.split(" ")[1]
   let user = null;
   try {
-    user = jwt.verify(token, process.env.JWT_SECRET);
+    user = jwt.verify(token, process.env.JWT_SECRET); //decoded token in user
+    // console.log("user-updated", user);
   }
   catch (err) {
 
   }
 
   if (user) {
-    req.user = user;
+    req.user = user; //to access the value of req.user in next function
     next();
   } else {
     res.status(401).send({

@@ -12,8 +12,7 @@ const get = async (req, res, next) => {
 
 const productCreateschema = Joi.object({
   name: Joi.string().required(),
-  price: Joi.required(),
-  description: Joi.string().required()
+  price: Joi.required()
 })
 
 const create = async (req, res, next) => {
