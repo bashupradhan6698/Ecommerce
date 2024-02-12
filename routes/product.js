@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.get("", get) // GET /api/products
-router.get("/:id", fetchSingleProduct) //GET /api/products/product-id
+router.get("/:slug", fetchSingleProduct) //GET /api/products/product-id
 
 router.post("", checkAuthentication, isSeller, create) //POST /api/products
 

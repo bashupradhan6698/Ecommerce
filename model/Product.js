@@ -16,6 +16,12 @@ const ProductSchema = new Schema({
     required: true,
     min: 0
   },
+
+  images: {
+    type: [String],
+
+  },
+
   description: {
     type: String
   },
