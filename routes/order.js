@@ -11,6 +11,6 @@ router.get("", checkAuthentication, isBuyer, fetchOrders)
 
 router.get("/order-id", fetchSingleOrder)
 
-router.post("", createOrder)
+router.post("", checkAuthentication, isBuyer, createOrder)
 
 module.exports = router 

@@ -92,13 +92,16 @@ const logIn = async (req, res, next) => {
         })
         return;
       }
-
-      res.status(401).send({
-        msg: "Invalid credentials"
-      })
     }
+    res.status(401).send({
+      msg: "Invalid credentials"
+    })
 
-  } catch (err) {
+
+
+
+  }
+  catch (err) {
     next(err);
   }
 }

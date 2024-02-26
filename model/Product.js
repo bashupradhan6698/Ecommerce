@@ -1,4 +1,6 @@
+const { number } = require('joi');
 const mongoose = require('mongoose');
+const User = require('./User');
 
 
 const Schema = mongoose.Schema;
@@ -30,7 +32,27 @@ const ProductSchema = new Schema({
     required: true,
     type: ObjectId,
     ref: "User"
-  }
+  },
+  reviews: [
+    {
+      rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
+      },
+      created_by: {
+        type: ObjectId,
+        ref: "User",
+        required: true
+      },
+      comment: {
+        type: String,
+        maxlegth: 255
+      }
+    }
+  ],
+
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
