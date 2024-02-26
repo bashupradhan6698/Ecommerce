@@ -37,3 +37,9 @@ let errors = {
 // })
 
 console.log(converted);
+
+
+
+db.products.updateMany({}, {
+  $set: { stock: 10 }
+})

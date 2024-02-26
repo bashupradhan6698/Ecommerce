@@ -23,7 +23,11 @@ const ProductSchema = new Schema({
     type: [String],
 
   },
-
+  stock: {
+    type: Number,
+    min: 0,
+    default: 0
+  },
   description: {
     type: String
   },

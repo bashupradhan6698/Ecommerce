@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { PENDING, COMPLETED, REJECTED } = require("../constants/order_status");
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -6,11 +7,11 @@ const OrderSchema = new Schema({
   products: {
     type: [
       {
-        // product_id: {
-        //   type: ObjectId,
-        //   ref: "Product",
-        //   required: true,
-        // },
+        product_id: {
+          type: ObjectId,
+          ref: "Product",
+          required: true,
+        },
         name: {
           type: String,
           required: true
@@ -24,6 +25,12 @@ const OrderSchema = new Schema({
           type: Number,
           min: 0,
           required: true
+        },
+        status: {
+          type: String,
+          enum: [PENDING, COMPLETED, REJECTED],
+          required: true,
+          default: PENDING
         }
       }
     ],
