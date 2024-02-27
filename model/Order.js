@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { PENDING, COMPLETED, REJECTED } = require("../constants/order_status");
+const Product = require("./Product")
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -37,7 +38,6 @@ const OrderSchema = new Schema({
     required: true,
     validate: {
       validator: function (value) {
-        console.log(value);
         if (value.length == 0) return false
       },
       message: "at least one product needed"
@@ -52,5 +52,15 @@ const OrderSchema = new Schema({
 }, {
   timestamps: true
 });
+
+// OrderSchema.post("save", async function (order) {
+//   // console.log("saved order");
+//   // console.log(order);
+//   for (product of order.products) {
+//     await Product.findByIdAndUpdate(product.product_id, {
+//       $inc: { stock: -(product.quantity) }
+//     })
+//   }
+// })
 
 module.exports = mongoose.model("Order", OrderSchema); 

@@ -75,6 +75,12 @@ const createOrder = async (req, res, next) => {
     // console.log(mapped_products);
     // return;
     let order = await Order.create({ products: mapped_products, created_by: req.user._id })
+    // console.log(order);
+    for (product of order.products) {
+      await Product.findByIdAndUpdate(product.product_id, {
+        $inc: { stock: -(product.quantity) }
+      })
+    }
     res.send(order)
   } catch (err) {
     next(err)
