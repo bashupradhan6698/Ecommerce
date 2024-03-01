@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.get("", checkAuthentication, isBuyer, fetchOrders)
 
-router.get("/order-id", fetchSingleOrder)
+router.get("/:slug", checkAuthentication, isBuyer, fetchSingleOrder)
 
 router.post("", checkAuthentication, isBuyer, createOrder)
 

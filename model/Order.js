@@ -61,6 +61,6 @@ const OrderSchema = new Schema({
 //       $inc: { stock: -(product.quantity) }
 //     })
 //   }
-// })
+// })     // mongoose middle ware
 
 module.exports = mongoose.model("Order", OrderSchema); 

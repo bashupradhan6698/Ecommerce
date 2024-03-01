@@ -3,14 +3,20 @@ const Order = require("../model/Order")
 const joi = require("joi")
 const Product = require("../model/Product")
 
-const fetchOrders = (req, res) => {
+const fetchOrders = async (req, res, next) => {
   /* link order model and fetch from Order Model */
-  res.send("fetch all orders")
+
+  let orders = await Order.find({
+    created_by: req.user._id
+  })
+  res.send(orders)
 }
 
-const fetchSingleOrder = (req, res) => {
+const fetchSingleOrder = async (req, res) => {
   /* link order model and fetch from Order Model */
-  res.send("fetch single orders")
+
+  let order = await Order.findById(req.params.slug)
+  res.send(order)
 }
 
 const createOrder = async (req, res, next) => {
