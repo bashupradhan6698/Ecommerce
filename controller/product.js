@@ -23,10 +23,124 @@ const get = async (req, res, next) => {
     //   ]
     // }, {})
 
-    /* find method --> aggregation
+    /* find method --> 
+    aggregation
+    aggregation stages
     aggregation pipeline
     aggregation framework 
-    aggregation--> advancved find method*/
+    aggregation--> advancved find method
+    */
+    // let products = await Product.aggregate(
+    //   [
+    //     {
+    //       $match: {
+    //         $or: [
+    //           { name: RegExp(search_term, "i") },
+    //           { categories: RegExp(search_term, "i") }
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       $match: {
+    //         $and: [
+    //           { price: { $gte: price_from } },
+    //           { price: { $lte: price_to } },
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       $addFields: { avg_Rating: { $avg: "$reviews.rating" } }
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "users",
+    //         localField: "created_by",
+    //         foreignField: "_id",
+    //         as: "created_by"
+    //       }
+    //     },
+    //     {
+    //       $unwind: "$created_by"
+    //     },
+    //     {
+    //       $project: {
+    //         "reviews": 0,
+    //         "created_by.password": 0,
+    //         "created_by.role": 0,
+    //         "created_by.updatedAt": 0,
+    //         "created_by.createdAt": 0,
+    //       }
+    //     },
+    //     {
+    //       $facet: {
+    //         meta_data: [
+    //           { $count: "total" },
+    //           { $addFields: { page, per_page } }
+    //         ],
+    //         data: [
+    //           {
+    //             $skip: ((page - 1) * per_page)
+    //           },
+    //           {
+    //             $limit: per_page
+    //           },
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       $unwind: "$meta_data"
+    //     }
+    //   ]
+    // )
+
+    /*withour using facet */
+    let total = await Product.aggregate(
+      [
+        {
+          $match: {
+            $or: [
+              { name: RegExp(search_term, "i") },
+              { categories: RegExp(search_term, "i") }
+            ]
+          }
+        },
+        {
+          $match: {
+            $and: [
+              { price: { $gte: price_from } },
+              { price: { $lte: price_to } },
+            ]
+          }
+        },
+        {
+          $addFields: { avg_Rating: { $avg: "$reviews.rating" } }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "created_by",
+            foreignField: "_id",
+            as: "created_by"
+          }
+        },
+        {
+          $unwind: "$created_by"
+        },
+        {
+          $project: {
+            "reviews": 0,
+            "created_by.password": 0,
+            "created_by.role": 0,
+            "created_by.updatedAt": 0,
+            "created_by.createdAt": 0,
+          }
+        },
+        {
+          $count: "total"
+        }
+      ]
+    )
+
     let products = await Product.aggregate(
       [
         {
@@ -73,11 +187,20 @@ const get = async (req, res, next) => {
         },
         {
           $limit: per_page
-        }
+        },
       ]
     )
 
-    res.send(products)
+    res.send(
+      {
+        meta_data: {
+          total: total[0].total,
+          page: page,
+          per_page: per_page
+        },
+        products: products
+      }
+    )
   } catch (err) {
     next(err)
   }
